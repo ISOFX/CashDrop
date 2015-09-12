@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Globalization;
+using System.Windows.Forms;
+using GTA;
+using GTA.Math;
+using GTA.Native;
+
+class MenuController : Script
+{
+    public void CashDrop(string Model, Vector3 Position, string Pickup)
+    {
+        int ModelHash = Function.Call<int>(Hash.GET_HASH_KEY, Model);
+        int PickupHash = Function.Call<int>(Hash.GET_HASH_KEY, Pickup);
+        Function.Call(Hash.REQUEST_MODEL, ModelHash);
+        if (Function.Call<bool>(Hash.HAS_MODEL_LOADED, ModelHash))
+        {
+            Function.Call(Hash.CREATE_AMBIENT_PICKUP, PickupHash, Position.X, Position.Y, Position.Z, 0, 2000, ModelHash, 0, 1);
+            Function.Call(Hash.SET_MODEL_AS_NO_LONGER_NEEDED, ModelHash);
+        }
+    }
+}
